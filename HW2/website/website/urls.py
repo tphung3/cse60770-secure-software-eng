@@ -21,4 +21,6 @@ urlpatterns = [
     path('tasktracker/', include('tasktracker.urls')),
     # admin interface (not relevant for this assignment)
     path('admin/', admin.site.urls),
+    # login interface provided by a built-in module
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
