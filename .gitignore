@@ -1,5 +1,5 @@
 # Project-specific folders
-/target/
+StaticAnalyzer/target
 
 # OS generated files #
 .DS_Store
