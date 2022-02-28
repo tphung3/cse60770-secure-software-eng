@@ -1,3 +1,4 @@
+// javac Example2.java --release 8 && jar cvf Example2.jar *.class && rm *.class
 class Main1{
     public static void main(String[] args) {
         int i = 1;

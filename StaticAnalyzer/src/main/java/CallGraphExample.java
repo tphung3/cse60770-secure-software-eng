@@ -1,14 +1,20 @@
 import com.ibm.wala.ipa.callgraph.*;
 import com.ibm.wala.ipa.callgraph.cha.CHACallGraph;
 import com.ibm.wala.ipa.callgraph.impl.Util;
+import com.ibm.wala.ipa.callgraph.propagation.InstanceKey;
+import com.ibm.wala.ipa.callgraph.propagation.PointerAnalysis;
+import com.ibm.wala.ipa.callgraph.propagation.SSAPropagationCallGraphBuilder;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.ipa.slicer.PDG;
 import com.ibm.wala.ipa.slicer.SDG;
+import com.ibm.wala.ipa.slicer.Slicer;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.CancelException;
 import com.ibm.wala.util.WalaException;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.io.FileProvider;
+import com.ibm.wala.viz.DotUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,11 +63,24 @@ public class CallGraphExample {
 
     public static void main(String[] args) throws IOException, WalaException, URISyntaxException, CancelException {
         // creates an analysis scope
-        AnalysisScope scope = createScope(CallGraphExample.class.getResource("Example1.jar").getPath());
+        AnalysisScope scope = createScope(CallGraphExample.class.getResource("Example2.jar").getPath());
         // build the class hierarchy
         IClassHierarchy cha = ClassHierarchyFactory.make(scope);
 
         CallGraph cg = buildNCfaCallGraph(scope, cha, 1);
+        AnalysisOptions options = new AnalysisOptions();
+        Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope, cha);
+        options.setEntrypoints(entrypoints);
+        AnalysisCache analysisCache = new AnalysisCacheImpl();
+        SSAPropagationCallGraphBuilder builder = Util.makeNCFABuilder(1, options, analysisCache, cha, scope);
+        builder.makeCallGraph(options, null);
+        PointerAnalysis<InstanceKey> pa = builder.getPointerAnalysis();
+
+        SDG sdg = new SDG(cg,pa, Slicer.DataDependenceOptions.NO_BASE_NO_HEAP, Slicer.ControlDependenceOptions.FULL);
+
+        PDG pdg = sdg.getPDG(cg.getEntrypointNodes().iterator().next());
+        DotUtil.dotify(pdg,null,"pdg1.dot",null,null);
+
 
     }
 }
