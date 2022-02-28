@@ -1,16 +1,12 @@
-import com.ibm.wala.classLoader.IClass;
-import com.ibm.wala.classLoader.IMethod;
-import com.ibm.wala.ipa.callgraph.AnalysisScope;
-import com.ibm.wala.ipa.callgraph.CallGraph;
-import com.ibm.wala.ipa.callgraph.Entrypoint;
+import com.ibm.wala.ipa.callgraph.*;
 import com.ibm.wala.ipa.callgraph.cha.CHACallGraph;
 import com.ibm.wala.ipa.callgraph.impl.Util;
-import com.ibm.wala.ipa.cha.ClassHierarchy;
-import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.ipa.slicer.SDG;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.CancelException;
+import com.ibm.wala.util.WalaException;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.io.FileProvider;
 
@@ -34,19 +30,40 @@ public class CallGraphExample {
         AnalysisScopeReader.addClassPathToScope(jreUrl.getPath(), scope, ClassLoaderReference.Primordial);
         return scope;
     }
-    // javac HelloWorld.java --release 8
-    public static void main(String[] args) throws IOException, ClassHierarchyException, URISyntaxException, CancelException {
+
+    public CallGraph buildChaCallGraph(AnalysisScope scope, IClassHierarchy classHierarchy) throws CancelException {
+        CHACallGraph cg = new CHACallGraph(classHierarchy, true);
+        Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope, classHierarchy);
+        cg.init(entrypoints);
+        return cg;
+    }
+
+    public static CallGraph buildRtaCallGraph(AnalysisScope scope, IClassHierarchy classHierarchy) throws CallGraphBuilderCancelException {
+        AnalysisOptions options = new AnalysisOptions();
+        Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope, classHierarchy);
+        options.setEntrypoints(entrypoints);
+        AnalysisCache analysisCache = new AnalysisCacheImpl();
+        return Util.makeRTABuilder(options, analysisCache, classHierarchy, scope).makeCallGraph(options, null);
+    }
+
+    public static CallGraph buildNCfaCallGraph(AnalysisScope scope, IClassHierarchy classHierarchy, int n) throws CallGraphBuilderCancelException {
+        AnalysisOptions options = new AnalysisOptions();
+        Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope, classHierarchy);
+        options.setEntrypoints(entrypoints);
+        AnalysisCache analysisCache = new AnalysisCacheImpl();
+        return Util.makeNCFABuilder(n, options, analysisCache, classHierarchy, scope).makeCallGraph(options, null);
+    }
+
+
+    public static void main(String[] args) throws IOException, WalaException, URISyntaxException, CancelException {
         // creates an analysis scope
-        AnalysisScope scope = createScope(CallGraphExample.class.getResource("HelloWorld.class").getPath());
+        AnalysisScope scope = createScope(CallGraphExample.class.getResource("Example1.jar").getPath());
         // build the class hierarchy
         IClassHierarchy cha = ClassHierarchyFactory.make(scope);
 
-        CHACallGraph cg = new CHACallGraph(cha, true);
-        Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope, cha);
-        cg.init(entrypoints);
-        cg.forEach(n ->{
-            System.out.println(n);
-        });
+        CallGraph cg = buildNCfaCallGraph(scope, cha, 1);
 
     }
 }
+
+
