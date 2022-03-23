@@ -63,7 +63,7 @@ public class CallGraphExample {
 
     public static void main(String[] args) throws IOException, WalaException, URISyntaxException, CancelException {
         // creates an analysis scope
-        AnalysisScope scope = createScope(CallGraphExample.class.getResource("Example2.jar").getPath());
+        AnalysisScope scope = createScope(CallGraphExample.class.getResource("Example3.jar").getPath());
         // build the class hierarchy
         IClassHierarchy cha = ClassHierarchyFactory.make(scope);
 
@@ -75,13 +75,12 @@ public class CallGraphExample {
         SSAPropagationCallGraphBuilder builder = Util.makeNCFABuilder(1, options, analysisCache, cha, scope);
         builder.makeCallGraph(options, null);
         PointerAnalysis<InstanceKey> pa = builder.getPointerAnalysis();
-
         SDG sdg = new SDG(cg,pa, Slicer.DataDependenceOptions.NO_BASE_NO_HEAP, Slicer.ControlDependenceOptions.FULL);
 
-        PDG pdg = sdg.getPDG(cg.getEntrypointNodes().iterator().next());
-        DotUtil.dotify(pdg,null,"pdg1.dot",null,null);
+//        PDG pdg = sdg.getPDG(cg.getEntrypointNodes().iterator().next());
+//        DotUtil.dotify(pdg,null,"pdg1.dot",null,null);
 
-
+        DotUtil.dotify(sdg,null,"sdg-example3.dot",null,null);
     }
 }
 

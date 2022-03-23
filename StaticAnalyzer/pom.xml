@@ -26,6 +26,14 @@
     </properties>
 
     <dependencies>
+        <!-- Apache Commons (for adding extra data structures, e.g. tuples) -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
+        </dependency>
+
         <!-- IBM Wala -->
         <dependency> <!-- WALA Core -->
             <groupId>com.ibm.wala</groupId>
