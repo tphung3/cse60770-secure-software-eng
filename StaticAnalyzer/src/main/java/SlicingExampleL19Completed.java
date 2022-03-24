@@ -1,5 +1,6 @@
 import com.ibm.wala.cast.java.loader.JavaSourceLoaderImpl;
 import com.ibm.wala.classLoader.IClass;
+import com.ibm.wala.classLoader.ShrikeBTMethod;
 import com.ibm.wala.classLoader.ShrikeCTMethod;
 import com.ibm.wala.ipa.callgraph.AnalysisCacheImpl;
 import com.ibm.wala.ipa.callgraph.AnalysisOptions;
@@ -86,6 +87,26 @@ public class SlicingExampleL19Completed {
         }
 
 
+    }
+
+    public int getLineNumber(Statement s){
+        if (s.getKind() == Statement.Kind.NORMAL) { // ignore special kinds of statements
+            int bcIndex, instructionIndex = ((NormalStatement) s).getInstructionIndex();
+            try {
+                bcIndex = ((ShrikeBTMethod) s.getNode().getMethod()).getBytecodeIndex(instructionIndex);
+                try {
+                    int src_line_number = s.getNode().getMethod().getLineNumber(bcIndex);
+                    System.err.println ( "Source line number = " + src_line_number );
+                } catch (Exception e) {
+                    System.err.println("Bytecode index no good");
+                    System.err.println(e.getMessage());
+                }
+            } catch (Exception e ) {
+                System.err.println("it's probably not a BT method (e.g. it's a fakeroot method)");
+                System.err.println(e.getMessage());
+            }
+        }
+        return -1;
     }
 
     private static Set<Statement> findSources(SDG<InstanceKey> sdg) {
