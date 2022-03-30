@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7a4a804c-6ba1-43bf-b62d-cb39688f25ba" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/VulnerabilityFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/VulnerabilityFinder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StaticAnalyzer/src/main/java/SlicingExampleL19Completed.java" beforeDir="false" afterPath="$PROJECT_DIR$/../StaticAnalyzer/src/main/java/SlicingExampleL19Completed.java" afterDir="false" />
-    </list>
+    <list default="true" id="7a4a804c-6ba1-43bf-b62d-cb39688f25ba" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,7 +54,7 @@
       <option name="presentableId" value="Default" />
       <updated>1648055538236</updated>
       <workItem from="1648055539430" duration="660000" />
-      <workItem from="1648062736577" duration="1991000" />
+      <workItem from="1648062736577" duration="2335000" />
     </task>
     <servers />
   </component>
