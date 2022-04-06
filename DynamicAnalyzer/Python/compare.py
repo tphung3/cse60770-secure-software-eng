@@ -5,3 +5,6 @@ def compare(a, b):
 		return 'a is less than b'
 	else:
 		return 'a is higher than b'
+
+
+		

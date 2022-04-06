@@ -62,7 +62,7 @@ public class SlicingExampleL19Completed {
         options.setEntrypoints(Util.makeMainEntrypoints(scope, classHierarchy));
         SSAPropagationCallGraphBuilder builder = Util.makeNCFABuilder(1, options, new AnalysisCacheImpl(), classHierarchy, scope);
         CallGraph callGraph = builder.makeCallGraph(options);
-
+callGraph.getNodes
         PointerAnalysis<InstanceKey> pa = builder.getPointerAnalysis();
 
 
