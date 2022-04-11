@@ -1,7 +1,7 @@
 # Project-specific folders
 StaticAnalyzer/target
-DynamicAnalyzer/Python/activity10.py
-DynamicAnalyzer/Python/activity11.py
+# DynamicAnalyzer/Python/activity10.py
+# DynamicAnalyzer/Python/activity11.py
 # OS generated files #
 .DS_Store
 .DS_Store?
