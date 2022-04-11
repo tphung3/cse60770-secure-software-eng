@@ -7,6 +7,4 @@ def test(x, y):
       if x > y + 10:
          print("ERROR")
 
-def main():
-   test(x,y)
  

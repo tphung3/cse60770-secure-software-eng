@@ -13,7 +13,8 @@ s = z3.Solver()
 
 c1 = x0 == 2*y0
 c2 = x0 > y0 + 10
-s.add(z3.And(c1, c2))  
+c3 = y0 < 0
+s.add(z3.And(c1, c2, c3))  
 
 # attempt to solve the constraint
 if s.check() == z3.sat:
