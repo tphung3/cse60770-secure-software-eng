@@ -12,7 +12,8 @@ def get_code(function_code, lineno):
 	return source_lines[lineno - starting_line_no].rstrip()
 
 # checks whether a tainted variable reached a sink
-def taint_check(frame, event, arg, codeline):	
+def taint_check(frame, event, arg, codeline):
+	
 	if event == "return":
 		m = SINK_REGEX.match(codeline)
 		var_name = m.group(1)

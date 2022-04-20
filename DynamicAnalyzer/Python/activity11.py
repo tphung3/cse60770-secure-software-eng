@@ -37,7 +37,7 @@ def collect_path_conditions(tree):
 def analyze(frame, event, arg):
 	function_code = frame.f_code   			
 	function_name = function_code.co_name 
-	print(function_name)
+	
 	if function_name in("test", "twice"):
 		lineno = frame.f_lineno
 		codeline = get_code(function_code, lineno)
